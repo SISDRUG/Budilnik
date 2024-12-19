@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class BudilnikRepository {
     ArrayList<Budilnik> budilniks;
@@ -26,6 +27,10 @@ public class BudilnikRepository {
 
     public boolean addBudilnik (Budilnik e){
         return this.budilniks.add(e);
+    }
+
+    public boolean addBudilnik (List<Integer> params){
+        return this.budilniks.add(new Budilnik(params.get(0),params.get(1), params.get(2) == 1));
     }
 
     public Budilnik find (int index){

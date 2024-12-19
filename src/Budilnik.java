@@ -3,6 +3,10 @@ public class Budilnik {
     private int hours;
     private boolean status;
 
+    public Budilnik(){
+
+    }
+
     public Budilnik(int minutes, int hours, boolean status) {
         this.minutes = minutes;
         this.hours = hours;

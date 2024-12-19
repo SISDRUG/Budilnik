@@ -8,6 +8,9 @@
 */
 
 
+import org.codehaus.jackson.map.ObjectMapper;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -25,8 +28,12 @@ public class Main {
             {
                 case "1" -> {
                     clearConsole();
-                    if (budilnikRepository.addBudilnik(showCreateMenu())) {
-                        System.out.println("Успешно создан");
+                    List<Integer> params = showCreateMenu();
+                    if (params.isEmpty()) {
+                        System.out.println("Операция отменена");
+                    }
+                    else if (budilnikRepository.addBudilnik(params)){
+                        System.out.println("Будильник успешно создан");
                     }
                 }
                 case "2" -> {
@@ -44,6 +51,10 @@ public class Main {
                     {System.out.println("В данный момент нет будильников для удаления");}
 
                 }
+                case "4"->{
+
+                }
+
                 case null, default -> System.out.printf("%s отсутствует как функция \n", input);
             }
         }
@@ -53,20 +64,75 @@ public class Main {
         System.out.println("1. Создать будильник");
         System.out.println("2. Просмотреть будильники");
         System.out.println("3. Удалить будильник");
+        System.out.println("4. Сохранить будильники");
     }
 
-    public static Budilnik showCreateMenu(){
+    public static List<Integer> showCreateMenu(){
         System.out.println("Создание будильника");
         int m, h;
-        boolean status = false;
+        int status = 0;
         Scanner in = new Scanner(System.in);
-        System.out.println("Введите час");
-        h = in.nextInt();
-        System.out.println("Введите минуты");
-        m = in.nextInt();
-        System.out.println("Хотите включить будильник? (y/n)");
-        if(in.next().equals("y")){ status = true;}
-        return new Budilnik(m,h,status);
+        h = getHour();
+        if (h < 0){
+            return List.of();
+        }
+        m = getMinutes();
+        if (m < 0){
+            return List.of();
+        }
+        System.out.println("Хотите включить будильник? (y/any key)");
+        if(in.next().equals("y")){ status = 1;}
+        return List.of(m,h,status);
+    }
+
+    public static int getHour() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите час (0-23) или exit для отмены:");
+
+        try {
+            String input = scanner.nextLine();
+
+            if (!input.equalsIgnoreCase("exit")){
+                int hour = Integer.parseInt(input);
+                if (hour < 0 || hour > 23) {
+                    System.out.println("Ошибка: час должен быть в диапазоне от 0 до 23.");
+                    return getHour();
+                }
+                else {
+                    return hour;
+                }
+            }
+            else {return -1;}
+
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка: введите корректное целое число.");
+            return getHour();
+        }
+    }
+
+    public static int getMinutes() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите минуты (0-59) или exit для отмены: ");
+
+        try {
+            String input = scanner.nextLine();
+
+            if (!input.equalsIgnoreCase("exit")){
+                int minutes = Integer.parseInt(input);
+                if (minutes < 0 || minutes > 59) {
+                    System.out.println("Ошибка: час должен быть в диапазоне от 0 до 59.");
+                    return getMinutes();
+                }
+                else {
+                    return minutes;
+                }
+            }
+            else {return -1;}
+
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка: введите корректное целое число.");
+            return getMinutes();
+        }
     }
 
     public static void showDeleteMenu(BudilnikRepository repo){
@@ -78,7 +144,7 @@ public class Main {
             if (i >= 0 && i < repo.budilniks.size()) {
                 Budilnik budilnik = repo.find(i);
                 budilnik.showInfo();
-                System.out.println("Вы уверенны что хотите удалить данный будильник (y/n)");
+                System.out.println("Вы уверенны что хотите удалить данный будильник (y/any key)");
                 if (in.next().equals("y")) {
                     repo.deletBudilnik(budilnik);
                     clearConsole();
