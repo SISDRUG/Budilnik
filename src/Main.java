@@ -1,10 +1,12 @@
 /*
  ToDO
- *  1. Создать класс и обьект Будильник
- *  2. Создать репозиторий для хранения обьектов типа Будильник
- *  3. Можно создавать будильники на определенное время (мин/час)
- *  4. Реализация консольного интерфейса
- *  5. Сохранение в csv или json
+ *  1. Разобраться с потоками
+ *  2. Добавить проверку на существования будильника с такими же параметрами
+ *  3. Добавить сортировку и быстрые действия в меню просмотра будильников
+ *  4. Посмотреть ошибки реализаций и посмотреть аналоги
+ *  5. Добавить действие переключение статуса будильника после выключения
+ *  6. Добавить проверку включен ли будильник
+ *  7. Проверить Warn
 */
 
 
@@ -16,16 +18,20 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
-public class Main {
-    public static void main(String[] args) throws IOException {
+import static java.lang.Thread.sleep;
 
+public class Main {
+    public static void main(String[] args) throws IOException, InterruptedException {
         Scanner in = new Scanner(System.in);
+
         String input = "init";
         BudilnikRepository budilnikRepository = new BudilnikRepository();
         ObjectMapper objectMapper = new ObjectMapper();
         clearConsole();
-        Thread TimeThread = new Thread(new TimeTread(),"TimeThread");
-        TimeThread.start();
+//        Thread timeThread = new Thread(new TimeThread(),"TimeThread");
+        TimeThread task = new TimeThread();
+        Thread childThread = new Thread(task);
+        childThread.start();
 
         try {
             File file = new File("budilnik.json");
@@ -36,7 +42,6 @@ public class Main {
         }
 
         while (!"0".equals(input)){
-
             showMainMenu();
             input = in.next();
             clearConsole();
@@ -71,6 +76,10 @@ public class Main {
                 case "4"->{
                     System.out.println("Сохранение начато дождитесь окончания");
                     System.out.printf("Сохранение законченно: %s \n",saveBudilniks(budilnikRepository));
+                }
+
+                case "stop"->{
+                    task.pause();
                 }
 
                 case null, default -> System.out.printf("%s отсутствует как функция \n", input);
@@ -204,6 +213,5 @@ public class Main {
             System.out.println();
         }
     }
-
 
 }
