@@ -10,15 +10,31 @@
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         Scanner in = new Scanner(System.in);
         String input = "init";
         BudilnikRepository budilnikRepository = new BudilnikRepository();
+        ObjectMapper objectMapper = new ObjectMapper();
+        clearConsole();
+        Thread TimeThread = new Thread(new TimeTread(),"TimeThread");
+        TimeThread.start();
+
+        try {
+            File file = new File("budilnik.json");
+            budilnikRepository = objectMapper.readValue(file, BudilnikRepository.class);
+            System.out.printf("Найдено %d сохраненных будильников \n", budilnikRepository.budilniks.size());
+        } catch (IOException e) {
+            System.out.println("Сохраненных будильников нет\n");
+        }
+
         while (!"0".equals(input)){
 
             showMainMenu();
@@ -46,13 +62,15 @@ public class Main {
                     budilnikRepository.showBudilniks();
                     if (!budilnikRepository.budilniks.isEmpty()) {
                         showDeleteMenu(budilnikRepository);
+                        saveBudilniks(budilnikRepository);
                     }
                     else
                     {System.out.println("В данный момент нет будильников для удаления");}
 
                 }
                 case "4"->{
-
+                    System.out.println("Сохранение начато дождитесь окончания");
+                    System.out.printf("Сохранение законченно: %s \n",saveBudilniks(budilnikRepository));
                 }
 
                 case null, default -> System.out.printf("%s отсутствует как функция \n", input);
@@ -135,6 +153,8 @@ public class Main {
         }
     }
 
+
+
     public static void showDeleteMenu(BudilnikRepository repo){
         Scanner in = new Scanner(System.in);
         boolean flag = true;
@@ -162,6 +182,20 @@ public class Main {
             }
         }
 
+    }
+
+    public static String saveBudilniks(BudilnikRepository budilnikRepository){
+        try(FileWriter writer = new FileWriter("budilnik.json", false))
+        {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String json = objectMapper.writeValueAsString(budilnikRepository);
+            writer.write(json);
+            writer.flush();
+            return "Успешно";
+        }
+        catch(IOException ex){
+            return (ex.getMessage());
+        }
     }
 
 

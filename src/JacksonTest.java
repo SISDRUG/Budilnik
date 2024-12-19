@@ -25,7 +25,7 @@ public class JacksonTest {
 
     @Test
     public void jsonFileToPojo() throws IOException {
-        File file = new File("src/budilnik.json");
+        File file = new File("budilnik.json");
 
         BudilnikRepository budilnik = objectMapper.readValue(file, BudilnikRepository.class);
 

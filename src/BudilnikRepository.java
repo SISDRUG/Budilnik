@@ -1,6 +1,7 @@
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class BudilnikRepository {
     ArrayList<Budilnik> budilniks;
@@ -50,5 +51,11 @@ public class BudilnikRepository {
             }
         }
         System.out.println();
+    }
+
+    public boolean alarm(){
+        Stream<Budilnik> s = budilniks.stream().filter(budilnik -> budilnik.getHours() == LocalTime.now().getHour()
+                                                                            && budilnik.getMinutes() == LocalTime.now().getMinute());
+        return s.count()>0;
     }
 }
