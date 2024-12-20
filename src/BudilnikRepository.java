@@ -29,11 +29,21 @@ public class BudilnikRepository {
     }
 
     public boolean addBudilnik (Budilnik e){
-        return this.budilniks.add(e);
+        if (budilniks.stream().filter(budilnik -> budilnik.getHours() == e.getHours() && budilnik.getMinutes() == e.getMinutes()).count()<1){
+            return this.budilniks.add(e);
+        }
+        else {
+            return false;
+        }
     }
 
     public boolean addBudilnik (List<Integer> params){
-        return this.budilniks.add(new Budilnik(params.get(0),params.get(1), params.get(2) == 1));
+        if (budilniks.stream().filter(budilnik -> budilnik.getHours() == params.get(1) && budilnik.getMinutes() == params.getFirst()).count()<1) {
+            return this.budilniks.add(new Budilnik(params.get(0), params.get(1), params.get(2) == 1));
+        }else
+        {
+            return false;
+        }
     }
 
     public Budilnik find (int index){

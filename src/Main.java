@@ -54,6 +54,8 @@ public class Main {
                     else if (budilnikRepository.addBudilnik(params)){
                         System.out.println("Будильник успешно создан");
                         saveBudilniks(budilnikRepository);
+                    }else {
+                        System.out.println("Такой будильник уже есть");
                     }
                 }
                 case "2" -> {
@@ -240,7 +242,17 @@ public class Main {
             switch (input){
 
                 case "1" ->{
-                    showCreateMenu();
+                    clearConsole();
+                    List<Integer> params = showCreateMenu();
+                    if (params.isEmpty()) {
+                        System.out.println("Операция отменена");
+                    }
+                    else if (budilnikRepository.addBudilnik(params)){
+                        System.out.println("Будильник успешно создан");
+                        saveBudilniks(budilnikRepository);
+                    }else {
+                        System.out.println("Такой будильник уже есть");
+                    }
                     input = "0";
                 }
 
@@ -313,12 +325,14 @@ public class Main {
                     }
                     else
                     {System.out.println("В данный момент нет будильников для удаления");}
+                    input = "0";
                 }
 
                 case "5" ->{
                     budilnikRepository.clear();
                     System.out.println("Будильники очищены");
                     saveBudilniks(budilnikRepository);
+                    input = "0";
                 }
 
                 case null, default -> System.out.printf("%s отсутствует как функция \n", input);
