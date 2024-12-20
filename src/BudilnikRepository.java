@@ -1,3 +1,5 @@
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,9 +55,57 @@ public class BudilnikRepository {
         System.out.println();
     }
 
-    public boolean alarm(){
+
+    @JsonIgnore
+    public boolean isAlarm(){
         Stream<Budilnik> s = budilniks.stream().filter(budilnik -> budilnik.getHours() == LocalTime.now().getHour()
                                                                             && budilnik.getMinutes() == LocalTime.now().getMinute());
         return s.count()>0;
+    }
+
+    public BudilnikRepository showActive(){
+        BudilnikRepository activBudilnikRepository = new BudilnikRepository();
+        if (this.budilniks.isEmpty()){
+            System.out.println("Будильников еще нет, создайте свой первый будильник через меню ");
+        }
+        else {
+            int i = 1;
+            for (Budilnik b : this.budilniks) {
+                if (b.isStatus()){
+                    System.out.printf("[%d] ", i);
+                    b.showInfo();
+                    activBudilnikRepository.addBudilnik(b);
+                    i++;
+                }
+            }
+        }
+
+        System.out.println();
+        return activBudilnikRepository;
+    }
+
+    public BudilnikRepository showInActive(){
+        BudilnikRepository activBudilnikRepository = new BudilnikRepository();
+        if (this.budilniks.isEmpty()){
+            System.out.println("Будильнов еще нет, создайте свой первый будильник черезе меню ");
+        }
+        else {
+            int i = 1;
+            for (Budilnik b : this.budilniks) {
+                if (!b.isStatus()){
+                    System.out.printf("[%d] ", i);
+                    b.showInfo();
+                    activBudilnikRepository.addBudilnik(b);
+                    i++;
+                }
+            }
+        }
+
+        System.out.println();
+        return activBudilnikRepository;
+    }
+
+    public void clear(){
+        this.budilniks.clear();
     }
 }

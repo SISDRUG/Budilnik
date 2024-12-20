@@ -33,8 +33,10 @@ public class TimeThread implements Runnable{
                     } catch (IOException e) {
 
                     }
-                    if (budilnikRepository.alarm()){
+                    Thread.sleep(100);
+                    if (budilnikRepository.isAlarm()){
                         System.out.printf("Allarm %d:%d \n",  LocalTime.now().getHour() , LocalTime.now().getMinute());
+                        System.out.println("Stop для выключения");
                         try {
                             File soundFile = new File("src/signal-elektronnogo-budilnika-33304.wav");
                             AudioInputStream ais = AudioSystem.getAudioInputStream(soundFile);

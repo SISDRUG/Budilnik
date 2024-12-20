@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
-import static java.lang.Thread.sleep;
 
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -28,7 +27,6 @@ public class Main {
         BudilnikRepository budilnikRepository = new BudilnikRepository();
         ObjectMapper objectMapper = new ObjectMapper();
         clearConsole();
-//        Thread timeThread = new Thread(new TimeThread(),"TimeThread");
         TimeThread task = new TimeThread();
         Thread childThread = new Thread(task);
         childThread.start();
@@ -55,11 +53,14 @@ public class Main {
                     }
                     else if (budilnikRepository.addBudilnik(params)){
                         System.out.println("Будильник успешно создан");
+                        saveBudilniks(budilnikRepository);
                     }
                 }
                 case "2" -> {
+                    clearConsole();
                     System.out.println("Будильники:");
                     budilnikRepository.showBudilniks();
+                    showBudilniksMenu(budilnikRepository);
 
                 }
                 case "3" -> {
@@ -78,6 +79,12 @@ public class Main {
                     System.out.printf("Сохранение законченно: %s \n",saveBudilniks(budilnikRepository));
                 }
 
+                case "5" ->{
+                    budilnikRepository.clear();
+                    System.out.println("Будильники очищены");
+                    saveBudilniks(budilnikRepository);
+                }
+
                 case "stop"->{
                     task.pause();
                 }
@@ -92,6 +99,7 @@ public class Main {
         System.out.println("2. Просмотреть будильники");
         System.out.println("3. Удалить будильник");
         System.out.println("4. Сохранить будильники");
+        System.out.println("5. Удалить все будильники");
     }
 
     public static List<Integer> showCreateMenu(){
@@ -211,6 +219,111 @@ public class Main {
     public static void clearConsole (){
         for (int i = 0; i < 20; i++) {
             System.out.println();
+        }
+    }
+
+    public static void showBudilniksMenu(BudilnikRepository budilnikRepository){
+        System.out.println("1. Создать будильник");
+        System.out.println("2. Выключить будильник");
+        System.out.println("3. Включить будильник");
+        System.out.println("4. Удалить будильник");
+        System.out.println("5. Удалить все будильники");
+        System.out.println("6. Отсортировать по возрастанию");
+        System.out.println("7. Отсортировать по убыванию");
+        System.out.println("0. Выход");
+        Scanner in = new Scanner(System.in);
+        String input = "init";
+
+        while (!"0".equals(input)){
+            input = in.next();
+
+            switch (input){
+
+                case "1" ->{
+                    showCreateMenu();
+                    input = "0";
+                }
+
+                case "2" ->{
+                    BudilnikRepository activeBudilnikRepository = budilnikRepository.showActive();
+                    boolean flag = true;
+                    while (flag) {
+                        System.out.println("Какой будильник вы хотите выключить, введите номер или 0 для выхода");
+                        int i = in.nextInt() - 1;
+                        if (i >= 0 && i < budilnikRepository.budilniks.size()) {
+                            Budilnik budilnik = activeBudilnikRepository.find(i);
+                            budilnik.showInfo();
+                            System.out.println("Вы уверенны что хотите выключить данный будильник (y/any key)");
+                            if (in.next().equals("y")) {
+                                budilnik.setStatus(false);
+                                clearConsole();
+                                System.out.println("Операция выполнена");
+                                saveBudilniks(budilnikRepository);
+                            } else {
+                                clearConsole();
+                                System.out.println("Операция отменена");
+                            }
+                            flag = false;
+                        } else if (i == -1) {
+                            flag = false;
+                            clearConsole();
+                        } else {
+                            System.out.println("Введено не верное значение");
+                        }
+                    }
+                    input = "0";
+                }
+
+                case "3" ->{
+                    BudilnikRepository inActiveBudilnikRepository = budilnikRepository.showInActive();
+                    boolean flag = true;
+                    while (flag) {
+                        System.out.println("Какой будильник вы хотите включить, введите номер или 0 для выхода");
+                        int i = in.nextInt() - 1;
+                        if (i >= 0 && i < budilnikRepository.budilniks.size()) {
+                            Budilnik budilnik = inActiveBudilnikRepository.find(i);
+                            budilnik.showInfo();
+                            System.out.println("Вы уверенны что хотите включить данный будильник (y/any key)");
+                            if (in.next().equals("y")) {
+                                budilnik.setStatus(true);
+                                clearConsole();
+                                System.out.println("Операция выполнена");
+                                saveBudilniks(budilnikRepository);
+                            } else {
+                                clearConsole();
+                                System.out.println("Операция отменена");
+                            }
+                            flag = false;
+                        } else if (i == -1) {
+                            flag = false;
+                            clearConsole();
+                        } else {
+                            System.out.println("Введено не верное значение");
+                        }
+                    }
+                    input = "0";
+                }
+
+                case "4" ->{
+                    System.out.println("Удаление будильника:");
+                    budilnikRepository.showBudilniks();
+                    if (!budilnikRepository.budilniks.isEmpty()) {
+                        showDeleteMenu(budilnikRepository);
+                        saveBudilniks(budilnikRepository);
+                    }
+                    else
+                    {System.out.println("В данный момент нет будильников для удаления");}
+                }
+
+                case "5" ->{
+                    budilnikRepository.clear();
+                    System.out.println("Будильники очищены");
+                    saveBudilniks(budilnikRepository);
+                }
+
+                case null, default -> System.out.printf("%s отсутствует как функция \n", input);
+            }
+            clearConsole();
         }
     }
 
