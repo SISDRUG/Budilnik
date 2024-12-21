@@ -12,9 +12,12 @@
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import java.awt.desktop.AppEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -87,8 +90,20 @@ public class Main {
                     saveBudilniks(budilnikRepository);
                 }
 
+                case "6" ->{
+                    budilnikRepository.offAll();
+                    System.out.println("Будильники выключены");
+                    saveBudilniks(budilnikRepository);
+                }
+
                 case "stop"->{
                     task.pause();
+                }
+
+                case "0" ->{
+                    childThread.interrupt();
+                    System.exit(0);
+
                 }
 
                 case null, default -> System.out.printf("%s отсутствует как функция \n", input);
@@ -102,6 +117,8 @@ public class Main {
         System.out.println("3. Удалить будильник");
         System.out.println("4. Сохранить будильники");
         System.out.println("5. Удалить все будильники");
+        System.out.println("6. Выключить все будильники");
+        System.out.println("0. Закрыть приложение");
     }
 
     public static List<Integer> showCreateMenu(){
@@ -332,6 +349,17 @@ public class Main {
                     budilnikRepository.clear();
                     System.out.println("Будильники очищены");
                     saveBudilniks(budilnikRepository);
+                    showBudilniksMenu(budilnikRepository);
+                    input = "0";
+                }
+
+                case "6" ->{
+                    Collections.sort(budilnikRepository.budilniks, new BudilnikComparator());
+                    input = "0";
+                }
+
+                case "7" ->{
+                    Collections.sort(budilnikRepository.budilniks, new BudilnikReverseComparator());
                     input = "0";
                 }
 

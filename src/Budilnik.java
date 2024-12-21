@@ -40,6 +40,6 @@ public class Budilnik {
 
     public void showInfo(){
 
-        System.out.printf("%d:%d %s \n",this.hours, this.minutes, this.status? "Включен": "Выключен" );
+        System.out.printf("%02d:%02d %s \n",this.hours, this.minutes, this.status? "Включен": "Выключен" );
     }
 }

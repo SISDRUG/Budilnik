@@ -115,6 +115,10 @@ public class BudilnikRepository {
         return activBudilnikRepository;
     }
 
+    public void offAll(){
+        this.budilniks.forEach(budilnik -> budilnik.setStatus(false));
+    }
+
     public void clear(){
         this.budilniks.clear();
     }

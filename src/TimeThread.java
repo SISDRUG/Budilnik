@@ -61,9 +61,8 @@ public class TimeThread implements Runnable{
                 }
             }
             try {
-                Thread.sleep(30_000);
+                Thread.sleep(60_000 - LocalTime.now().getSecond()*1000);
                 resume();
-                System.out.println("i alive");
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
