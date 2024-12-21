@@ -1,29 +1,16 @@
-/*
- ToDO
- *  1. Разобраться с потоками
- *  2. Добавить проверку на существования будильника с такими же параметрами
- *  3. Добавить сортировку и быстрые действия в меню просмотра будильников
- *  4. Посмотреть ошибки реализаций и посмотреть аналоги
- *  5. Добавить действие переключение статуса будильника после выключения
- *  6. Добавить проверку включен ли будильник
- *  7. Проверить Warn
-*/
 
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import java.awt.desktop.AppEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
 
 public class Main {
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
 
         String input = "init";
@@ -42,7 +29,7 @@ public class Main {
             System.out.println("Сохраненных будильников нет\n");
         }
 
-        while (!"0".equals(input)){
+        while (true){
             showMainMenu();
             input = in.next();
             clearConsole();
@@ -65,7 +52,7 @@ public class Main {
                     clearConsole();
                     System.out.println("Будильники:");
                     budilnikRepository.showBudilniks();
-                    showBudilniksMenu(budilnikRepository);
+                    showBudilniksMenu(budilnikRepository, task);
 
                 }
                 case "3" -> {
@@ -96,9 +83,7 @@ public class Main {
                     saveBudilniks(budilnikRepository);
                 }
 
-                case "stop"->{
-                    task.pause();
-                }
+                case "stop"-> task.pause();
 
                 case "0" ->{
                     childThread.interrupt();
@@ -202,7 +187,7 @@ public class Main {
                 budilnik.showInfo();
                 System.out.println("Вы уверенны что хотите удалить данный будильник (y/any key)");
                 if (in.next().equals("y")) {
-                    repo.deletBudilnik(budilnik);
+                    repo.deleteBudilnik(budilnik);
                     clearConsole();
                     System.out.println("Операция выполнена");
                 } else {
@@ -241,7 +226,7 @@ public class Main {
         }
     }
 
-    public static void showBudilniksMenu(BudilnikRepository budilnikRepository){
+    public static void showBudilniksMenu(BudilnikRepository budilnikRepository , TimeThread task){
         System.out.println("1. Создать будильник");
         System.out.println("2. Выключить будильник");
         System.out.println("3. Включить будильник");
@@ -349,17 +334,22 @@ public class Main {
                     budilnikRepository.clear();
                     System.out.println("Будильники очищены");
                     saveBudilniks(budilnikRepository);
-                    showBudilniksMenu(budilnikRepository);
+                    showBudilniksMenu(budilnikRepository, task);
                     input = "0";
                 }
 
                 case "6" ->{
-                    Collections.sort(budilnikRepository.budilniks, new BudilnikComparator());
+                    budilnikRepository.budilniks.sort(new BudilnikComparator());
                     input = "0";
                 }
 
                 case "7" ->{
-                    Collections.sort(budilnikRepository.budilniks, new BudilnikReverseComparator());
+                    budilnikRepository.budilniks.sort(new BudilnikReverseComparator());
+                    input = "0";
+                }
+
+                case "stop"-> {
+                    task.pause();
                     input = "0";
                 }
 

@@ -9,27 +9,20 @@ public class BudilnikRepository {
     ArrayList<Budilnik> budilniks;
 
     public BudilnikRepository() {
-        this.budilniks = new ArrayList<Budilnik>() ;
-    }
-
-    public BudilnikRepository(ArrayList<Budilnik> budilniks) {
-        this.budilniks = budilniks;
+        this.budilniks = new ArrayList<>() ;
     }
 
     public ArrayList<Budilnik> getBudilniks() {
         return budilniks;
     }
 
-    public void setBudilniks(ArrayList<Budilnik> budilniks) {
-        this.budilniks = budilniks;
+    public void deleteBudilnik(Budilnik e){
+        this.budilniks.remove(e);
     }
 
-    public boolean deletBudilnik (Budilnik e){
-        return this.budilniks.remove(e);
-    }
 
     public boolean addBudilnik (Budilnik e){
-        if (budilniks.stream().filter(budilnik -> budilnik.getHours() == e.getHours() && budilnik.getMinutes() == e.getMinutes()).count()<1){
+        if (budilniks.stream().noneMatch(budilnik -> budilnik.getHours() == e.getHours() && budilnik.getMinutes() == e.getMinutes())){
             return this.budilniks.add(e);
         }
         else {
@@ -38,7 +31,7 @@ public class BudilnikRepository {
     }
 
     public boolean addBudilnik (List<Integer> params){
-        if (budilniks.stream().filter(budilnik -> budilnik.getHours() == params.get(1) && budilnik.getMinutes() == params.getFirst()).count()<1) {
+        if (budilniks.stream().noneMatch(budilnik -> budilnik.getHours() == params.get(1) && budilnik.getMinutes() == params.getFirst())) {
             return this.budilniks.add(new Budilnik(params.get(0), params.get(1), params.get(2) == 1));
         }else
         {
@@ -52,7 +45,7 @@ public class BudilnikRepository {
 
     public void showBudilniks (){
         if (this.budilniks.isEmpty()){
-            System.out.println("Будильнов еще нет, создайте свой первый будильник черезе меню ");
+            System.out.println("Будильников еще нет, создайте свой первый будильник через меню ");
         }
         else {
             int i = 1;
@@ -70,7 +63,7 @@ public class BudilnikRepository {
     public boolean isAlarm(){
         Stream<Budilnik> s = budilniks.stream().filter(budilnik -> budilnik.getHours() == LocalTime.now().getHour()
                                                                             && budilnik.getMinutes() == LocalTime.now().getMinute());
-        return s.count()>0;
+        return s.findAny().isPresent();
     }
 
     public BudilnikRepository showActive(){
@@ -97,7 +90,7 @@ public class BudilnikRepository {
     public BudilnikRepository showInActive(){
         BudilnikRepository activBudilnikRepository = new BudilnikRepository();
         if (this.budilniks.isEmpty()){
-            System.out.println("Будильнов еще нет, создайте свой первый будильник черезе меню ");
+            System.out.println("Будильников еще нет, создайте свой первый будильник через меню ");
         }
         else {
             int i = 1;
