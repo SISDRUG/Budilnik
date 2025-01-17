@@ -20,18 +20,18 @@ public class TimeThread implements Runnable{
     }
     public void run(){
         System.out.printf("%s started... \n", Thread.currentThread().getName());
-        BudilnikRepository budilnikRepository = new BudilnikRepository();
+        AlarmRepository alarmRepository = new AlarmRepository();
         while (true){
             while (!paused){
                 try{
                     try {
-                        File file = new File("budilnik.json");
-                        budilnikRepository = objectMapper.readValue(file, BudilnikRepository.class);
+                        File file = new File("alarm.json");
+                        alarmRepository = objectMapper.readValue(file, AlarmRepository.class);
                     } catch (IOException _) {
 
                     }
                     Thread.sleep(100);
-                    if (budilnikRepository.isAlarm()){
+                    if (alarmRepository.isAlarm()){
                         System.out.printf("Alarm %d:%d \n",  LocalTime.now().getHour() , LocalTime.now().getMinute());
                         System.out.println("Stop для выключения");
                         try {

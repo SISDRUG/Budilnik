@@ -1,13 +1,13 @@
-public class Budilnik {
+public class Alarm {
     private int minutes;
     private int hours;
     private boolean status;
 
-    public Budilnik(){
+    public Alarm(){
 
     }
 
-    public Budilnik(int minutes, int hours, boolean status) {
+    public Alarm(int minutes, int hours, boolean status) {
         this.minutes = minutes;
         this.hours = hours;
         this.status = status;
