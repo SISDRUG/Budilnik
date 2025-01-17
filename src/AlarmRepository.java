@@ -9,45 +9,42 @@ public class AlarmRepository {
     ArrayList<Alarm> alarms;
 
     public AlarmRepository() {
-        this.alarms = new ArrayList<>() ;
+        this.alarms = new ArrayList<>();
     }
 
     public ArrayList<Alarm> getAlarms() {
         return alarms;
     }
 
-    public void deleteAlarm(Alarm e){
+    public void deleteAlarm(Alarm e) {
         this.alarms.remove(e);
     }
 
 
-    public boolean addAlarm(Alarm e){
-        if (alarms.stream().noneMatch(alarm -> alarm.getHours() == e.getHours() && alarm.getMinutes() == e.getMinutes())){
+    public boolean addAlarm(Alarm e) {
+        if (alarms.stream().noneMatch(alarm -> alarm.getHours() == e.getHours() && alarm.getMinutes() == e.getMinutes())) {
             return this.alarms.add(e);
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-    public boolean addAlarm(List<Integer> params){
+    public boolean addAlarm(List<Integer> params) {
         if (alarms.stream().noneMatch(alarm -> alarm.getHours() == params.get(1) && alarm.getMinutes() == params.getFirst())) {
             return this.alarms.add(new Alarm(params.get(0), params.get(1), params.get(2) == 1));
-        }else
-        {
+        } else {
             return false;
         }
     }
 
-    public Alarm find (int index){
+    public Alarm find(int index) {
         return this.alarms.get(index);
     }
 
-    public void showAlarms(){
-        if (this.alarms.isEmpty()){
+    public void showAlarms() {
+        if (this.alarms.isEmpty()) {
             System.out.println("Будильников еще нет, создайте свой первый будильник через меню ");
-        }
-        else {
+        } else {
             int i = 1;
             for (Alarm a : this.alarms) {
                 System.out.printf("[%d] ", i);
@@ -60,21 +57,20 @@ public class AlarmRepository {
 
 
     @JsonIgnore
-    public boolean isAlarm(){
+    public boolean isAlarm() {
         Stream<Alarm> s = alarms.stream().filter(alarm -> alarm.getHours() == LocalTime.now().getHour()
-                                                                            && alarm.getMinutes() == LocalTime.now().getMinute());
+                && alarm.getMinutes() == LocalTime.now().getMinute());
         return s.findAny().isPresent();
     }
 
-    public AlarmRepository showActive(){
+    public AlarmRepository showActive() {
         AlarmRepository activeAlarmRepository = new AlarmRepository();
-        if (this.alarms.isEmpty()){
+        if (this.alarms.isEmpty()) {
             System.out.println("Будильников еще нет, создайте свой первый будильник через меню ");
-        }
-        else {
+        } else {
             int i = 1;
             for (Alarm b : this.alarms) {
-                if (b.isStatus()){
+                if (b.isStatus()) {
                     System.out.printf("[%d] ", i);
                     b.showInfo();
                     activeAlarmRepository.addAlarm(b);
@@ -87,15 +83,14 @@ public class AlarmRepository {
         return activeAlarmRepository;
     }
 
-    public AlarmRepository showInActive(){
+    public AlarmRepository showInActive() {
         AlarmRepository activeAlarmRepository = new AlarmRepository();
-        if (this.alarms.isEmpty()){
+        if (this.alarms.isEmpty()) {
             System.out.println("Будильников еще нет, создайте свой первый будильник через меню ");
-        }
-        else {
+        } else {
             int i = 1;
             for (Alarm b : this.alarms) {
-                if (!b.isStatus()){
+                if (!b.isStatus()) {
                     System.out.printf("[%d] ", i);
                     b.showInfo();
                     activeAlarmRepository.addAlarm(b);
@@ -108,11 +103,11 @@ public class AlarmRepository {
         return activeAlarmRepository;
     }
 
-    public void offAll(){
+    public void offAll() {
         this.alarms.forEach(alarm -> alarm.setStatus(false));
     }
 
-    public void clear(){
+    public void clear() {
         this.alarms.clear();
     }
 }
