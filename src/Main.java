@@ -1,5 +1,3 @@
-
-
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.File;
@@ -29,22 +27,20 @@ public class Main {
             System.out.println("Сохраненных будильников нет\n");
         }
 
-        while (true){
+        while (true) {
             showMainMenu();
             input = in.next();
             clearConsole();
-            switch (input)
-            {
+            switch (input) {
                 case "1" -> {
                     clearConsole();
                     List<Integer> params = showCreateMenu();
                     if (params.isEmpty()) {
                         System.out.println("Операция отменена");
-                    }
-                    else if (budilnikRepository.addBudilnik(params)){
+                    } else if (budilnikRepository.addBudilnik(params)) {
                         System.out.println("Будильник успешно создан");
                         saveBudilniks(budilnikRepository);
-                    }else {
+                    } else {
                         System.out.println("Такой будильник уже есть");
                     }
                 }
@@ -61,31 +57,31 @@ public class Main {
                     if (!budilnikRepository.budilniks.isEmpty()) {
                         showDeleteMenu(budilnikRepository);
                         saveBudilniks(budilnikRepository);
+                    } else {
+                        System.out.println("В данный момент нет будильников для удаления");
                     }
-                    else
-                    {System.out.println("В данный момент нет будильников для удаления");}
 
                 }
-                case "4"->{
+                case "4" -> {
                     System.out.println("Сохранение начато дождитесь окончания");
-                    System.out.printf("Сохранение законченно: %s \n",saveBudilniks(budilnikRepository));
+                    System.out.printf("Сохранение законченно: %s \n", saveBudilniks(budilnikRepository));
                 }
 
-                case "5" ->{
+                case "5" -> {
                     budilnikRepository.clear();
                     System.out.println("Будильники очищены");
                     saveBudilniks(budilnikRepository);
                 }
 
-                case "6" ->{
+                case "6" -> {
                     budilnikRepository.offAll();
                     System.out.println("Будильники выключены");
                     saveBudilniks(budilnikRepository);
                 }
 
-                case "stop"-> task.pause();
+                case "stop" -> task.pause();
 
-                case "0" ->{
+                case "0" -> {
                     childThread.interrupt();
                     System.exit(0);
 
@@ -96,7 +92,7 @@ public class Main {
         }
     }
 
-    public static void showMainMenu (){
+    public static void showMainMenu() {
         System.out.println("1. Создать будильник");
         System.out.println("2. Просмотреть будильники");
         System.out.println("3. Удалить будильник");
@@ -106,22 +102,24 @@ public class Main {
         System.out.println("0. Закрыть приложение");
     }
 
-    public static List<Integer> showCreateMenu(){
+    public static List<Integer> showCreateMenu() {
         System.out.println("Создание будильника");
         int m, h;
         int status = 0;
         Scanner in = new Scanner(System.in);
         h = getHour();
-        if (h < 0){
+        if (h < 0) {
             return List.of();
         }
         m = getMinutes();
-        if (m < 0){
+        if (m < 0) {
             return List.of();
         }
         System.out.println("Хотите включить будильник? (y/any key)");
-        if(in.next().equals("y")){ status = 1;}
-        return List.of(m,h,status);
+        if (in.next().equals("y")) {
+            status = 1;
+        }
+        return List.of(m, h, status);
     }
 
     public static int getHour() {
@@ -131,17 +129,17 @@ public class Main {
         try {
             String input = scanner.nextLine();
 
-            if (!input.equalsIgnoreCase("exit")){
+            if (!input.equalsIgnoreCase("exit")) {
                 int hour = Integer.parseInt(input);
                 if (hour < 0 || hour > 23) {
                     System.out.println("Ошибка: час должен быть в диапазоне от 0 до 23.");
                     return getHour();
-                }
-                else {
+                } else {
                     return hour;
                 }
+            } else {
+                return -1;
             }
-            else {return -1;}
 
         } catch (NumberFormatException e) {
             System.out.println("Ошибка: введите корректное целое число.");
@@ -156,17 +154,17 @@ public class Main {
         try {
             String input = scanner.nextLine();
 
-            if (!input.equalsIgnoreCase("exit")){
+            if (!input.equalsIgnoreCase("exit")) {
                 int minutes = Integer.parseInt(input);
                 if (minutes < 0 || minutes > 59) {
                     System.out.println("Ошибка: час должен быть в диапазоне от 0 до 59.");
                     return getMinutes();
-                }
-                else {
+                } else {
                     return minutes;
                 }
+            } else {
+                return -1;
             }
-            else {return -1;}
 
         } catch (NumberFormatException e) {
             System.out.println("Ошибка: введите корректное целое число.");
@@ -175,8 +173,7 @@ public class Main {
     }
 
 
-
-    public static void showDeleteMenu(BudilnikRepository repo){
+    public static void showDeleteMenu(BudilnikRepository repo) {
         Scanner in = new Scanner(System.in);
         boolean flag = true;
         while (flag) {
@@ -205,28 +202,26 @@ public class Main {
 
     }
 
-    public static String saveBudilniks(BudilnikRepository budilnikRepository){
-        try(FileWriter writer = new FileWriter("budilnik.json", false))
-        {
+    public static String saveBudilniks(BudilnikRepository budilnikRepository) {
+        try (FileWriter writer = new FileWriter("budilnik.json", false)) {
             ObjectMapper objectMapper = new ObjectMapper();
             String json = objectMapper.writeValueAsString(budilnikRepository);
             writer.write(json);
             writer.flush();
             return "Успешно";
-        }
-        catch(IOException ex){
+        } catch (IOException ex) {
             return (ex.getMessage());
         }
     }
 
 
-    public static void clearConsole (){
+    public static void clearConsole() {
         for (int i = 0; i < 20; i++) {
             System.out.println();
         }
     }
 
-    public static void showBudilniksMenu(BudilnikRepository budilnikRepository , TimeThread task){
+    public static void showBudilniksMenu(BudilnikRepository budilnikRepository, TimeThread task) {
         System.out.println("1. Создать будильник");
         System.out.println("2. Выключить будильник");
         System.out.println("3. Включить будильник");
@@ -238,27 +233,26 @@ public class Main {
         Scanner in = new Scanner(System.in);
         String input = "init";
 
-        while (!"0".equals(input)){
+        while (!"0".equals(input)) {
             input = in.next();
 
-            switch (input){
+            switch (input) {
 
-                case "1" ->{
+                case "1" -> {
                     clearConsole();
                     List<Integer> params = showCreateMenu();
                     if (params.isEmpty()) {
                         System.out.println("Операция отменена");
-                    }
-                    else if (budilnikRepository.addBudilnik(params)){
+                    } else if (budilnikRepository.addBudilnik(params)) {
                         System.out.println("Будильник успешно создан");
                         saveBudilniks(budilnikRepository);
-                    }else {
+                    } else {
                         System.out.println("Такой будильник уже есть");
                     }
                     input = "0";
                 }
 
-                case "2" ->{
+                case "2" -> {
                     BudilnikRepository activeBudilnikRepository = budilnikRepository.showActive();
                     boolean flag = true;
                     while (flag) {
@@ -288,7 +282,7 @@ public class Main {
                     input = "0";
                 }
 
-                case "3" ->{
+                case "3" -> {
                     BudilnikRepository inActiveBudilnikRepository = budilnikRepository.showInActive();
                     boolean flag = true;
                     while (flag) {
@@ -318,19 +312,19 @@ public class Main {
                     input = "0";
                 }
 
-                case "4" ->{
+                case "4" -> {
                     System.out.println("Удаление будильника:");
                     budilnikRepository.showBudilniks();
                     if (!budilnikRepository.budilniks.isEmpty()) {
                         showDeleteMenu(budilnikRepository);
                         saveBudilniks(budilnikRepository);
+                    } else {
+                        System.out.println("В данный момент нет будильников для удаления");
                     }
-                    else
-                    {System.out.println("В данный момент нет будильников для удаления");}
                     input = "0";
                 }
 
-                case "5" ->{
+                case "5" -> {
                     budilnikRepository.clear();
                     System.out.println("Будильники очищены");
                     saveBudilniks(budilnikRepository);
@@ -338,17 +332,17 @@ public class Main {
                     input = "0";
                 }
 
-                case "6" ->{
+                case "6" -> {
                     budilnikRepository.budilniks.sort(new BudilnikComparator());
                     input = "0";
                 }
 
-                case "7" ->{
+                case "7" -> {
                     budilnikRepository.budilniks.sort(new BudilnikReverseComparator());
                     input = "0";
                 }
 
-                case "stop"-> {
+                case "stop" -> {
                     task.pause();
                     input = "0";
                 }

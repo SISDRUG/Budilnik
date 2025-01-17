@@ -1,1 +1,9 @@
-{"budilniks":[{"minutes":2,"hours":19,"status":true}]}
+{
+  "budilniks": [
+    {
+      "minutes": 2,
+      "hours": 19,
+      "status": true
+    }
+  ]
+}

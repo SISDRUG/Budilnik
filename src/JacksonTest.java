@@ -1,11 +1,8 @@
-import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class JacksonTest {
 
@@ -32,7 +29,6 @@ public class JacksonTest {
         System.out.println(budilnik.getBudilniks());
         System.out.println(budilnik.find(0).isStatus());
         budilnik.showBudilniks();
-
 
 
     }

@@ -3,7 +3,7 @@ public class Budilnik {
     private int hours;
     private boolean status;
 
-    public Budilnik(){
+    public Budilnik() {
 
     }
 
@@ -30,8 +30,8 @@ public class Budilnik {
     }
 
 
-    public void showInfo(){
+    public void showInfo() {
 
-        System.out.printf("%02d:%02d %s \n",this.hours, this.minutes, this.status? "Включен": "Выключен" );
+        System.out.printf("%02d:%02d %s \n", this.hours, this.minutes, this.status ? "Включен" : "Выключен");
     }
 }
