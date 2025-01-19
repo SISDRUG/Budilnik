@@ -8,8 +8,8 @@ import java.time.LocalTime;
 public class TimeThread implements Runnable {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private volatile boolean paused = false;
     private static final String FILE_PATH = "alarm.json";
+    private volatile boolean paused = false;
 
     public void pause() {
         paused = true;

@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Main {
     private static final String FILE_NAME = "alarm.json";
+
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
 
@@ -207,7 +208,7 @@ public class Main {
 
             invoker.executeCommand(input);
         }
-   }
+    }
 
     //region Commands for alarms menu
 
@@ -452,9 +453,9 @@ public class Main {
             Command command = commandMap.get(input);
             if (command != null) {
                 command.execute();
-            } else if (Objects.equals(input, "0")){
+            } else if (Objects.equals(input, "0")) {
                 System.out.println("Возврат в главное меню");
-            }else {
+            } else {
                 System.out.printf("%s отсутствует как функция \n", input);
             }
         }
