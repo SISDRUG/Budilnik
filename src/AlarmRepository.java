@@ -44,7 +44,7 @@ public class AlarmRepository {
     }
 
 
-    public  boolean isAlarmExist(Alarm alarm, int h, int m) {
+    public boolean isAlarmExist(Alarm alarm, int h, int m) {
         return alarm.getHours() == h && alarm.getMinutes() == m;
     }
 
@@ -72,7 +72,7 @@ public class AlarmRepository {
         int m = LocalTime.now().getMinute();
         int h = LocalTime.now().getHour();
         Stream<Alarm> s = alarms.stream().filter(alarm -> alarm.getHours() == h
-                                                    && alarm.getMinutes() == m);
+                && alarm.getMinutes() == m);
         return s.findAny().isPresent();
     }
 

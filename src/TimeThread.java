@@ -9,6 +9,7 @@ public class TimeThread implements Runnable {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final String FILE_PATH = "alarm.json";
+    final File soundFile = new File("src/signal-elektronnogo-budilnika-33304.wav");
     private volatile boolean paused = false;
 
     public void pause() {
@@ -37,7 +38,6 @@ public class TimeThread implements Runnable {
                         System.out.printf("Alarm %d:%d \n", LocalTime.now().getHour(), LocalTime.now().getMinute());
                         System.out.println("Stop для выключения");
                         try {
-                            File soundFile = new File("src/signal-elektronnogo-budilnika-33304.wav");
                             AudioInputStream ais = AudioSystem.getAudioInputStream(soundFile);
                             Clip clip = AudioSystem.getClip();
                             clip.open(ais);

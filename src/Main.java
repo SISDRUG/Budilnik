@@ -89,13 +89,13 @@ public class Main {
                 return -1;
             }
 
-                int hour = Integer.parseInt(input);
-                if (hour < 0 || hour > 23) {
-                    System.out.println("Ошибка: час должен быть в диапазоне от 0 до 23.");
-                    return getHour();
-                } else {
-                    return hour;
-                }
+            int hour = Integer.parseInt(input);
+            if (hour < 0 || hour > 23) {
+                System.out.println("Ошибка: час должен быть в диапазоне от 0 до 23.");
+                return getHour();
+            } else {
+                return hour;
+            }
 
         } catch (NumberFormatException e) {
             System.out.println("Ошибка: введите корректное целое число.");
@@ -111,16 +111,16 @@ public class Main {
             String input = scanner.nextLine();
 
             if (!input.equalsIgnoreCase("exit")) {
-                int minutes = Integer.parseInt(input);
-                if (minutes < 0 || minutes > 59) {
-                    System.out.println("Ошибка: час должен быть в диапазоне от 0 до 59.");
-                    return getMinutes();
-                } else {
-                    return minutes;
-                }
-            } else {
                 return -1;
             }
+            int minutes = Integer.parseInt(input);
+            if (minutes < 0 || minutes > 59) {
+                System.out.println("Ошибка: час должен быть в диапазоне от 0 до 59.");
+                return getMinutes();
+            } else {
+                return minutes;
+            }
+
 
         } catch (NumberFormatException e) {
             System.out.println("Ошибка: введите корректное целое число.");
