@@ -43,7 +43,6 @@ public class Main {
             clearConsole();
 
 
-
             invoker.executeCommand(input);
         }
 
@@ -206,8 +205,6 @@ public class Main {
             System.out.println("0. Выход");
             input = in.next();
             clearConsole();
-
-
 
 
             invoker.executeCommand(input);

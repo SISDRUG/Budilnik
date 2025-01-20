@@ -22,7 +22,9 @@ public class AlarmRepository {
 
 
     public boolean addAlarm(Alarm e) {
-        if (alarms.stream().noneMatch(alarm -> alarm.getHours() == e.getHours() && alarm.getMinutes() == e.getMinutes())) {
+        int h = e.getHours();
+        int m = e.getMinutes();
+        if (alarms.stream().noneMatch(alarm -> alarm.getHours() == h && alarm.getMinutes() == m)) {
             return this.alarms.add(e);
         } else {
             return false;
@@ -30,11 +32,20 @@ public class AlarmRepository {
     }
 
     public boolean addAlarm(List<Integer> params) {
-        if (alarms.stream().noneMatch(alarm -> alarm.getHours() == params.get(1) && alarm.getMinutes() == params.getFirst())) {
-            return this.alarms.add(new Alarm(params.get(0), params.get(1), params.get(2) == 1));
+        int h = params.get(1);
+        int m = params.getFirst();
+        int s = params.get(2);
+        boolean isUnique = alarms.stream().noneMatch(alarm -> isAlarmExist(alarm, m, h));
+        if (isUnique) {
+            return this.alarms.add(new Alarm(m, h, s == 1));
         } else {
             return false;
         }
+    }
+
+
+    public  boolean isAlarmExist(Alarm alarm, int h, int m) {
+        return alarm.getHours() == h && alarm.getMinutes() == m;
     }
 
     public Alarm find(int index) {
@@ -58,8 +69,10 @@ public class AlarmRepository {
 
     @JsonIgnore
     public boolean isAlarm() {
-        Stream<Alarm> s = alarms.stream().filter(alarm -> alarm.getHours() == LocalTime.now().getHour()
-                && alarm.getMinutes() == LocalTime.now().getMinute());
+        int m = LocalTime.now().getMinute();
+        int h = LocalTime.now().getHour();
+        Stream<Alarm> s = alarms.stream().filter(alarm -> alarm.getHours() == h
+                                                    && alarm.getMinutes() == m);
         return s.findAny().isPresent();
     }
 
