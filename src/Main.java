@@ -27,20 +27,22 @@ public class Main {
             System.out.println("Сохраненных будильников нет\n");
         }
 
+        CommandInvoker invoker = new CommandInvoker();
+        invoker.setCommand("1", new CreateAlarmCommand(alarmRepository));
+        invoker.setCommand("2", new ShowAlarmsCommand(alarmRepository, task));
+        invoker.setCommand("3", new DeleteAlarmCommand(alarmRepository));
+        invoker.setCommand("4", new SaveAlarmsCommand(alarmRepository));
+        invoker.setCommand("5", new ClearAlarmsCommand(alarmRepository));
+        invoker.setCommand("6", new TurnOffAlarmsCommand(alarmRepository));
+        invoker.setCommand("stop", new PauseTaskCommand(task));
+        invoker.setCommand("0", new ExitCommand(childThread));
+
         while (true) {
             showMainMenu();
             input = in.next();
             clearConsole();
 
-            CommandInvoker invoker = new CommandInvoker();
-            invoker.setCommand("1", new CreateAlarmCommand(alarmRepository));
-            invoker.setCommand("2", new ShowAlarmsCommand(alarmRepository, task));
-            invoker.setCommand("3", new DeleteAlarmCommand(alarmRepository));
-            invoker.setCommand("4", new SaveAlarmsCommand(alarmRepository));
-            invoker.setCommand("5", new ClearAlarmsCommand(alarmRepository));
-            invoker.setCommand("6", new TurnOffAlarmsCommand(alarmRepository));
-            invoker.setCommand("stop", new PauseTaskCommand(task));
-            invoker.setCommand("0", new ExitCommand(childThread));
+
 
             invoker.executeCommand(input);
         }
@@ -181,6 +183,16 @@ public class Main {
         Scanner in = new Scanner(System.in);
         String input = "init";
 
+        CommandInvoker invoker = new CommandInvoker();
+        invoker.setCommand("1", new CreateAlarmCommand(alarmRepository));
+        invoker.setCommand("2", new TurnOffAlarmCommand(alarmRepository, in));
+        invoker.setCommand("3", new TurnOnAlarmCommand(alarmRepository, in));
+        invoker.setCommand("4", new DeleteAlarmCommand(alarmRepository));
+        invoker.setCommand("5", new ClearAlarmsCommand(alarmRepository));
+        invoker.setCommand("6", new SortAlarmsCommand(alarmRepository));
+        invoker.setCommand("7", new SortReverseAlarmsCommand(alarmRepository));
+        invoker.setCommand("stop", new PauseTaskCommand(task));
+
         while (!"0".equals(input)) {
             System.out.println("Будильники:");
             alarmRepository.showAlarms();
@@ -195,15 +207,7 @@ public class Main {
             input = in.next();
             clearConsole();
 
-            CommandInvoker invoker = new CommandInvoker();
-            invoker.setCommand("1", new CreateAlarmCommand(alarmRepository));
-            invoker.setCommand("2", new TurnOffAlarmCommand(alarmRepository, in));
-            invoker.setCommand("3", new TurnOnAlarmCommand(alarmRepository, in));
-            invoker.setCommand("4", new DeleteAlarmCommand(alarmRepository));
-            invoker.setCommand("5", new ClearAlarmsCommand(alarmRepository));
-            invoker.setCommand("6", new SortAlarmsCommand(alarmRepository));
-            invoker.setCommand("7", new SortReverseAlarmsCommand(alarmRepository));
-            invoker.setCommand("stop", new PauseTaskCommand(task));
+
 
 
             invoker.executeCommand(input);
