@@ -85,7 +85,10 @@ public class Main {
         try {
             String input = scanner.nextLine();
 
-            if (!input.equalsIgnoreCase("exit")) {
+            if (input.equalsIgnoreCase("exit")) {
+                return -1;
+            }
+
                 int hour = Integer.parseInt(input);
                 if (hour < 0 || hour > 23) {
                     System.out.println("Ошибка: час должен быть в диапазоне от 0 до 23.");
@@ -93,9 +96,6 @@ public class Main {
                 } else {
                     return hour;
                 }
-            } else {
-                return -1;
-            }
 
         } catch (NumberFormatException e) {
             System.out.println("Ошибка: введите корректное целое число.");

@@ -1,1 +1,1 @@
-{"alarms":[{"minutes":23,"hours":12,"status":true},{"minutes":22,"hours":12,"status":true},{"minutes":23,"hours":23,"status":true},{"minutes":8,"hours":9,"status":true},{"minutes":10,"hours":11,"status":false}]}
+{"alarms":[{"minutes":22,"hours":12,"status":false},{"minutes":22,"hours":12,"status":false},{"minutes":0,"hours":10,"status":false},{"minutes":22,"hours":12,"status":false},{"minutes":11,"hours":11,"status":false}]}

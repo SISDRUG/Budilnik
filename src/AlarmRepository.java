@@ -35,7 +35,7 @@ public class AlarmRepository {
         int h = params.get(1);
         int m = params.getFirst();
         int s = params.get(2);
-        boolean isUnique = alarms.stream().noneMatch(alarm -> isAlarmExist(alarm, m, h));
+        boolean isUnique = alarms.stream().noneMatch(alarm -> isAlarmExist(alarm, h, m));
         if (isUnique) {
             return this.alarms.add(new Alarm(m, h, s == 1));
         } else {
