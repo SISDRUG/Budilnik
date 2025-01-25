@@ -82,11 +82,11 @@ public class AlarmRepository {
             System.out.println("Будильников еще нет, создайте свой первый будильник через меню ");
         } else {
             int i = 1;
-            for (Alarm b : this.alarms) {
-                if (b.isStatus()) {
+            for (Alarm a : this.alarms) {
+                if (a.isStatus()) {
                     System.out.printf("[%d] ", i);
-                    b.showInfo();
-                    activeAlarmRepository.addAlarm(b);
+                    a.showInfo();
+                    activeAlarmRepository.addAlarm(a);
                     i++;
                 }
             }

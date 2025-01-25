@@ -9,7 +9,8 @@ public class TimeThread implements Runnable {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final String FILE_PATH = "alarm.json";
-    final File soundFile = new File("src/signal-elektronnogo-budilnika-33304.wav");
+    private static final String SOUND_FILE_PATH = "src/signal-elektronnogo-budilnika-33304.wav";
+    final File soundFile = new File(SOUND_FILE_PATH);
     private volatile boolean paused = false;
 
     public void pause() {
